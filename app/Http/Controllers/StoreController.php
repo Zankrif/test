@@ -28,15 +28,15 @@ class StoreController extends Controller
     {
         /** @var StoreRepository $storeRepository */
         $storeRepository = app(StoreRepository::class);
-        
+
         $storeRepository->create($request->user()->id, $request->input('name'));
         $request->user()->update(['store_created'=>true]);
         return redirect()->route('store.index');
     }
     public function products(Request $request, Store $store)
     {
-        $products = $store->products()->paginate(6);
-        
+        $products  = $store->with('products')->get()->pluck('products')->flatten(); 
+
         return view('storeProductsList',compact('products','store'));
 
     }
@@ -62,5 +62,13 @@ class StoreController extends Controller
         $productService = app(ProductService::class);
         $productService->delete($store,$id);
         return redirect()->route('store.products.index',compact('store'));
+    }
+
+    public function post(Request $request, Store $store)
+    {
+         /** @var StoreRepository $storeRepository */
+         $storeRepository = app(StoreRepository::class);
+         $storeRepository->update($store, $request->input('name'));
+         return redirect()->route('store.index');
     }
 }

@@ -15,14 +15,25 @@ class UserPermissionCheck
      */
     public function handle($request, Closure $next)
     {
-        if(!empty($request->store->store_owner))
+
+      
+        if(!empty($request->store))
         {
-            if(!$request->user()->id == $request->store->store_owner)
+
+            if($request->user()->id != $request->store->store_owner_id)
             {
                 return redirect('home');
             }
-    
+            
+            return $next($request);
         }
-        return $next($request);
+        else{
+
+            if($request->user()->store_created == 0)
+            {
+                return $next($request);
+            }
+        }
+        return redirect('home');
     }
 }

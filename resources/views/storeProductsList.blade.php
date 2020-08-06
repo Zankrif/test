@@ -43,15 +43,9 @@
 
             <tbody>
                 @foreach ($products as $product)
+
                     <tr>
-                        <td>
-                            {{ $product->category }}
-                        </td>
-
-                        <td>
-                            {{ $product->brand }}
-                        </td>
-
+                        
                         <td>
                             {{ $product->name }}
                         </td>
@@ -96,11 +90,7 @@
             </div>
         </div>
         @endif
-        @if(!empty($products))
-        <div class="mnav" style="margin:auto; text-aligin:center;">
-            {{$products->links()}}   
-        </div>
-    @endif
+    
     </div> 
 
 @endsection

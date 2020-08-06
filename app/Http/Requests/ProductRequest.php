@@ -26,8 +26,8 @@ class ProductRequest extends FormRequest
         return [
             'name'=>['required','string','min:2','max:150'],
             'description'=>['required','string','min:5','max:2000'],
-            'brand'=>['required','string','min:2','max:150'],
-            'category'=>['required','string','min:2','max:150'],
+            'brand'=>['required','string','min:2','max:20'],
+            'category'=>['required','string','min:2','max:20'],
             'quantity'=>['required','int','min:1'],
             'price'=>['required','regex:/^\d+(\.\d{1,2})?$/']
         ];

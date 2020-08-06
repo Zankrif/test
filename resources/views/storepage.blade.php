@@ -9,7 +9,7 @@
 @section('content')
 <div class="container">
     <div class = 'form-bg'>
-        <form action="{{ route('store.post')}}" method="POST">
+        <form action="{{ route('store.post',['store'=>$store])}}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">

@@ -6,6 +6,7 @@ use App\Products;
 use Illuminate\Http\Request;
 use App\Repositorys\BasketRepository;
 use App\Repositorys\ProductRepository;
+use App\Services\BasketService;
 
 class BasketController
 { 
@@ -13,20 +14,17 @@ class BasketController
     public function addToOrder(Request $request, Products $product)
     {
 
-        $basketRepository = app(BasketRepository::class);
-        $basketRepository->add(
+       
+       app(BasketService::class)->add(
             $request->user()->id,
-            $product->id,
-            $product->name,
-            $product->price,
-            1
+           $product
         );
         return redirect('basket');
     }
     public function show(Request $request)
     {
         $basketRepository = app(BasketRepository::class);
-        $basket =  $basketRepository->show($request->user()->id);
+        $basket =  $basketRepository->findUserBasket($request->user()->id);
         $totalPrice=0;
         foreach($basket as $node)
         {
@@ -37,21 +35,28 @@ class BasketController
     public function increase(Basket $product)
     {
 
-        $productRepository = app(ProductRepository::class);
-        $quantity = $productRepository->getQuantity($product->product_id); 
-        if($product->quantity+1 <= $quantity)
-        {
-            $product->update(['quantity'=>$product->quantity+1]);
-        }
+        app(BasketService::class)->increase($product);
         return redirect()->route('basket.index');
     }
     public function decrease(Basket $product)
     {
-        if($product->quantity-1 > 0)
-        {
-            $product->update(['quantity'=>$product->quantity-1]);
-        }
+        app(BasketService::class)->decrease($product);
         return redirect()->route('basket.index');
+    }
+    public function pay(Request $request)
+    {
+        $userId = $request->user()->id;
+        $type=false;
+        if(app(BasketService::class)->pay($userId))
+        {
+            $type=true;
+            return view('bill',compact('type'));
+        }
+        else{
+            
+          
+            return view('bill',compact('type'));
+        }
     }
     public function delete(Basket $product)
     {

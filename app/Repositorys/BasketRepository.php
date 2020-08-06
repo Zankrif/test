@@ -4,13 +4,13 @@ use App\Basket;
 
 class BasketRepository
 {
-    public function add($user,$id, $name,$price,$quantity)
+    public function add($userId,$id, $name,$price,$quantity)
     {   
 
-        if(empty( $this->find($user,$id) ) )
+        if(empty( $this->find($userId,$id) ) )
         {
             Basket::create([
-                'owner_id'=>$user,
+                'owner_id'=>$userId,
                 'product_id'=>$id,
                 'product_name'=>$name,
                 'product_price'=>$price,
@@ -18,6 +18,10 @@ class BasketRepository
             ]);
         }
 
+    }
+    public function findUserBasket($userId)
+    {
+        return Basket::where('owner_id',$userId)->get();
     }
     public function find($user,$id)
     {
@@ -31,8 +35,5 @@ class BasketRepository
         $product->delete();
     }
 
-    public function show($user)
-    {
-       return Basket::where('owner_id',$user)->get();
-    }
+  
 }

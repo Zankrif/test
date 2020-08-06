@@ -1,7 +1,11 @@
 <?php
 namespace App\Services;
 use App\Repositorys\ProductRepository;
+use App\Services\BrandService;
+use App\Services\CategoryService;
+use App\Repositorys\BrandProductRepository;
 use App\Repositorys\StoreProductsRepository;
+use App\Repositorys\CategoryProductRepository;
 use App\Products;
 use App\Store;
 class ProductService
@@ -15,31 +19,29 @@ class ProductService
      * @var int $quantity
      * @return Products|null
      */
-    public function create($store , $name ,$description, $price, $quantity, $brand , $category): ?Products
+    public function create($store, $name ,$description, $price, $quantity, $brand , $category): ?Products
     {
         /** @var ProductRepository $productRepository */
         $productRepository = app(ProductRepository::class);
-        $storeProductRepository =  app (StoreProductsRepository::class);
-        for($i=0;$i<20;$i++)
-        {
-            $name = $this->RandomString(5);
-
-            $brand = $this->RandomString(10);
-            $category=$this->RandomString(15);
-            $price = mt_rand(1,9999)/10;
-            $quantity=mt_rand(1,9999);
-            $productModel = $productRepository->create($name ,$description,$price,$brand, $category,$quantity);
+        $brandService = app(BrandService::class);
+        $categoryService = app(CategoryService::class);
 
 
-            $storeProductRepository->create($store->id,$productModel->id);
-        }
+           
+            $brandId = $brandService->create($brand)->id;
+            $category = $categoryService->create($category)->id;
+            $productModel = $productRepository->create($name ,$description,$price,$quantity);
+            app( BrandProductRepository::class)->create($brandId,$productModel->id);
+            app( CategoryProductRepository::class)->create($category,$productModel->id);
+            app(StoreProductsRepository::class)->create($store->id,$productModel->id);
+        
        
         return $productModel;
 
     }
     function RandomString(int $length)
     {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+        $characters = 'abcABC'; 
         $randomString = ''; 
       
         for ($i = 0; $i < $length; $i++) { 
@@ -72,4 +74,33 @@ class ProductService
         }
 
     }
+
+    public function sell($proudctId , $quantity)
+    {
+        $productRepository = app(ProductRepository::class);
+        $product=$productRepository->findById($proudctId);
+        $newQuantity = $product->quantity - $quantity;
+        if($newQuantity <= 0)
+        {
+            $product->storeProducts()->delete();
+            $product->brandProducts()->delete();
+            $product->categoryProducts()->delete();
+            $product->delete();
+        }
+        else{
+            $product->update([
+                'quantity'=>$newQuantity
+            ]);
+        }
+
+    }
 }
+/*
+         $brandId = $brandService->create($brand)->id;
+        $category = $categoryService->create($category)->id;
+
+        $productModel = $productRepository->create($name ,$description,$price,$quantity);
+        app( BrandProductRepository::class)->create($brandId,$productModel->id);
+        app( CategoryProductRepository::class)->create($category,$productModel->id);
+        app(StoreProductsRepository::class)->create($store->id,$productModel->id);
+*/

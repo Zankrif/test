@@ -15,11 +15,11 @@ class UserRoleCheck
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->user()->role >= 2)
+        if($request->user()->role <= 2)
         {
-            return redirect('home');
+            return $next($request);
         }
-
-        return $next($request);
+        return redirect('home');
+       
     }
 }

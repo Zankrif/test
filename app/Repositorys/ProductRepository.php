@@ -14,7 +14,15 @@ class ProductRepository
     }
     public function getQuantity($id)
     {
-        return $this->findById($id)->quantity;
+        $productModel =  $this->findById($id);
+        if(!empty($productModel))
+        {
+            return $productModel->quantity;
+        }
+        else{
+            return null;
+        }
+        
     }
     /**
      * @var string $name
@@ -24,15 +32,13 @@ class ProductRepository
      * @var int $quantity
      * @return Products|null
      */
-    public function create( $name, $descripton , $price , $brand,$category , $quantity ): ?Products
+    public function create( $name, $descripton , $price  , $quantity ): ?Products
     {
         return  Products::firstOrCreate([
             'name'=>$name,
             'description'=>$descripton,
             'price'=>$price,
             'state'=>true,
-            'brand'=>$brand,
-            'category'=>$category,
 
             'quantity'=>$quantity,
         ]);
@@ -42,7 +48,7 @@ class ProductRepository
      * @var int $quantity
      * @return Products|null
      */
-    public function updateQuatity($product, $quantity): ?Products
+    public function updateQuantity($product, $quantity): ?Products
     {
         return $product->update([
             'quantity'=>$quantity

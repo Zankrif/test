@@ -26,7 +26,7 @@
                     </th>
                     <th></th>
                     <th >
-                        <a class='btn-lg btn-primary' href="#"> Оплатить</a>
+                        <a class='btn-lg btn-primary' href="{{ route('basket.pay') }}"  onclick='return confirm("Вы уверены что хотите оплатить товар?");' > Оплатить</a>
                     </th>
                 </tr>
             </thead>
@@ -51,14 +51,15 @@
                             {{ $node->quantity }}
                         </td>
                         <td><a class="btn btn-sm btn-outline-dark" href="{{ route('basket.increase',['product'=>$node]) }}">>>></a></td>
-                        <td><a class='btn btn-outline-danger' href="{{ route('basket.delete',['product'=>$node]) }}">Убрать из корзины</a></td>
+                        <td><a class='btn btn-outline-danger' href="{{ route('basket.delete',['product'=>$node]) }}" onclick='return confirm("Вы уверены что хотите убрать товар из корзины?");'>Убрать из корзины</a></td>
                     </tr>
                 @endforeach
                 <tr>
                     <td></td>
                     <td style="font-size: 20px">К оплате: {{ $totalPrice }} $ <td>
                     <td></td>
-                    <td><a class='btn-lg btn-primary' href="#"> Оплатить</a></td>
+                    
+                    <td><a class='btn-lg btn-primary' href="{{ route('basket.pay') }}" onclick='return confirm("Вы уверены что хотите оплатить товар?");'> Оплатить</a></td>
                     <td></td>
                     <td><a class='btn btn-success' href={{ route('main.index') }}>Вернуться к покупкам</a></td>
                 </tr>

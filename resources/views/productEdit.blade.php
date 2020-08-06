@@ -36,7 +36,7 @@
                                 <label for="description" class="col-md-4 col-form-label text-md-left" style="margin-left:5px">{{ __('Описние продукта :') }}</label>
                 
                                 <div class="col-md-6">
-                                <textarea id="description" class="form-control" name="description" style="resize: none" required>{{ $product->description }}</textarea> 
+                                <textarea id="description" class="form-control" name="description" rows="10" style="resize: auto" required>{{ $product->description }}</textarea> 
                 
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
