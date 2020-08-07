@@ -24,12 +24,15 @@ class BasketController
     public function show(Request $request)
     {
         $basketRepository = app(BasketRepository::class);
-        $basket =  $basketRepository->findUserBasket($request->user()->id);
+        
+        $basket = Basket::where('owner_id',$request->user()->id)->paginate(3);
         $totalPrice=0;
         foreach($basket as $node)
         {
+           
             $totalPrice +=$node->product_price*$node->quantity;
         }
+    
         return view('basket',compact('basket','totalPrice'));
     }
     public function increase(Basket $product)

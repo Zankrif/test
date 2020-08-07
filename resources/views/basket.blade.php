@@ -1,88 +1,43 @@
 @extends('layouts.app')
-
-
-
 @section('content')
-@if (!empty($basket[0]))
-    <div class="m-table" style="background-color:whitesmoke; width:max-content;   text-align: center;">
-       
-            
-        <table class="table" style="margin: auto; ">
-            <thead  class='thead-dark'>
-                <tr>
-                    <th></th>
-                    <th>
-                        Название
-                    </th>
+    <div class='basket'>
+        <div class='basket-header'>
+            Корзина:
+            <a class="btn close" href="{{ route('main.index') }}" aria-label="Close">&times;</a>
 
-                    <th>
-                        Цена за единицу  
-                    </th>
-
-                    <th >
-                    </th>
-                    <th>
-                        Количество
-                    </th>
-                    <th></th>
-                    <th >
-                        <a class='btn-lg btn-primary' href="{{ route('basket.pay') }}"  onclick='return confirm("Вы уверены что хотите оплатить товар?");' > Оплатить</a>
-                    </th>
-                </tr>
-            </thead>
-
-
-
-            <tbody>
-                @foreach ($basket as $node)
-                    <tr>
-                        <td></td>
-                        <td>
-                            {{ $node->product_name }}
-                        </td>
-                        <td>
-                            {{ $node->product_price }} $
-
-                        </td>
-
-
-                    <td><a class="btn btn-sm btn-outline-dark" href="{{ route('basket.decrease',['product'=>$node]) }}"><<<</a></td>
-                        <td>
-                            {{ $node->quantity }}
-                        </td>
-                        <td><a class="btn btn-sm btn-outline-dark" href="{{ route('basket.increase',['product'=>$node]) }}">>>></a></td>
-                        <td><a class='btn btn-outline-danger' href="{{ route('basket.delete',['product'=>$node]) }}" onclick='return confirm("Вы уверены что хотите убрать товар из корзины?");'>Убрать из корзины</a></td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td></td>
-                    <td style="font-size: 20px">К оплате: {{ $totalPrice }} $ <td>
-                    <td></td>
-                    
-                    <td><a class='btn-lg btn-primary' href="{{ route('basket.pay') }}" onclick='return confirm("Вы уверены что хотите оплатить товар?");'> Оплатить</a></td>
-                    <td></td>
-                    <td><a class='btn btn-success' href={{ route('main.index') }}>Вернуться к покупкам</a></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        @else
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card " style="margin:auto; width: 25%; text-align:center;">
-                    <div class="card-header">{{ __('Dashboard') }}</div>
-    
-                    <div class="card-body">
-                        
-                            {{ __('В данный момент корзина пуста ') }}
-                            <a class='btn btn-success' href={{ route('main.index') }}>Вернуться к покупкам</a>
-    
-                    </div>
-                </div>
+        </div>
+        @if (!empty($basket[0]))
+        @foreach ($basket as $node)
+        <div class="basket-product">
+            <h5 class="basket-product-header">  {{ $node->product_name }}</h5>
+            <p class="basket-product-sm-description" style="text-align: left"> {{mb_strimwidth ($node->product_description,0,120,'....')  }}</p>
+            <div style="display:inline-flex; padding: 0 10px;float:right">
+                <a class="btn btn-circle btn-outline-secondary" href="{{ route('basket.decrease',['product'=>$node]) }}">-</a>
+                 <label class="product-label" >{{ $node->quantity }}</label>
+            <a id='s' class="btn btn-circle btn-outline-secondary" href=" {{ route('basket.increase',['product'=>$node]) }} ">+</a>
+            <label class="product-label" >{{ $node->product_price }} $</label>
+            <i class="fas fa-trash"></i>
+            <a class=" btn  btn-outline-secondary  btn-circle" href="{{ route('basket.delete',['product'=>$node]) }}" onclick='return confirm("Вы уверены что хотите убрать товар из корзины?");'>&times</a>
+           
             </div>
+         </div>
+
+         @endforeach
+         <div class="buy">
+             <a class="btn btn-outline-primary" style="margin-top: 2px" href="{{ route('main.index') }}">Продолжить покупки</a>
+            <div class="buy-form">
+                <div class="buy-form-inside">
+                    <label class="product-label">К оплате {{ $totalPrice }} $</label>
+                    
+                </div> 
+                <a class=" btn  btn-outline-success  btn-circle" style="font-size: 1.5rem; line-height: 0.8;"href="{{ route('basket.pay') }}" onclick='return confirm("Вы уверены что хотите оплатить товар?");'>$</a>
+            </div>
+         </div> 
+         {{$basket->links()}}
+        @else
+        <div class="basket-product">
+            <label class="product-label" style="float:none; text-align: center" > Корзина пустая </label>
         </div>
         @endif
-
-    </div> 
-
+    </div>
 @endsection

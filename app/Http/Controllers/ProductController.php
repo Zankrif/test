@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Products::with('brand','category')->get();
+        $products = Products::with('brand','category')->paginate(12);
 
         return view('main',compact('products'));
     }
@@ -45,25 +45,12 @@ class ProductController extends Controller
     }
     public function searchByBrand(Request $request , Brand $brand)
     {
-        $products = $brand->products()->paginate(12);
-        foreach($products as $product)
-        {
-            $product['brand'] = $product->brand()->first();
-            $product['category'] = $product->category()->first();
-
-        }
+        $products = $brand->product()->with('brand','category')->paginate(12);
         return view('main',compact('products'));
     }
     public function searchByCategory(Request $request , Category $category)
     {
-
-        $products = $category->products()->paginate(12);
-        foreach($products as $product)
-        {
-            $product['brand'] = $product->brand()->first();
-            $product['category'] = $product->category()->first();
-
-        }
+        $products = $category->product()->with('brand','category')->paginate(12); 
         return view('main',compact('products'));
     }
 

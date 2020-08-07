@@ -15,6 +15,7 @@ class BasketService
             $product->id,
             $product->name,
             $product->price,
+            $product->description,
             1
         );
     }

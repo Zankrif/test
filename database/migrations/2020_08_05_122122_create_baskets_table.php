@@ -19,6 +19,7 @@ class CreateBasketsTable extends Migration
 
             $table->integer('product_id');
             $table->double('product_price');
+            $table->string('product_description',2000);
             $table->string('product_name');
             $table->integer('quantity');
             $table->timestamps();

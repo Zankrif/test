@@ -10,6 +10,7 @@ class Basket extends Model
         'owner_id',
         'product_id',
         'product_name',
+        'product_description',
         'product_price',
         'quantity',
     ];

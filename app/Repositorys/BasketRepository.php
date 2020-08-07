@@ -4,7 +4,7 @@ use App\Basket;
 
 class BasketRepository
 {
-    public function add($userId,$id, $name,$price,$quantity)
+    public function add($userId,$id, $name,$price, $description,$quantity)
     {   
 
         if(empty( $this->find($userId,$id) ) )
@@ -14,6 +14,7 @@ class BasketRepository
                 'product_id'=>$id,
                 'product_name'=>$name,
                 'product_price'=>$price,
+                'product_description'=>$description,
                 'quantity'=>$quantity,
             ]);
         }

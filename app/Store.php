@@ -17,8 +17,8 @@ class Store extends Model
     {
         return $this->belongsToMany('App\Products','store_products','store_id','product_id');
     }
-    public function prod()
+    public function product()
     {
-        return $this->belongsToMany('App\Products')->as('store');
+        return $this->belongsToMany('App\Products','store_products','store_id','product_id');
     }
 }

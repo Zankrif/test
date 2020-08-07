@@ -33,11 +33,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/basket/pay','BasketController@pay')->name('basket.pay');
     Route::middleware(UserRoleCheck::class)->group(function(){
         Route::get('/store','StoreController@index')->name('store.index');
-
-        Route::middleware(UserPermissionCheck::class)->group(function(){
-
-            Route::get('/store/create','StoreController@show')->name('store.create.index');    
-            Route::post('/store/create','StoreController@create')->name('store.create.post');
+        Route::get('/store/create','StoreController@show')->name('store.create.index');    
+        Route::post('/store/create','StoreController@create')->name('store.create.post');
+        Route::middleware(UserPermissionCheck::class)->group(function(){            
             Route::post('/store/{store}','StoreController@post')->name('store.post');
 
             Route::get('/store/{store}/product/add',"ProductController@show")->name('product.add.index');

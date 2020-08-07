@@ -12,6 +12,7 @@
         @if (!empty($products[0]))
             
         <table class="table" style="margin: auto;">
+            {{ $products->links() }}
             <thead  class='thead-dark'>
                 <tr>
                     <th>
@@ -47,6 +48,12 @@
                     <tr>
                         
                         <td>
+                            {{ $product->category[0]->name}}
+                        </td>
+                        <td>
+                            {{ $product->brand[0]->name}}
+                        </td>
+                        <td>
                             {{ $product->name }}
                         </td>
                         <td>
@@ -74,7 +81,9 @@
                 @endforeach
             </tbody>
         </table>
-
+        <div class='mnav'>
+            {{ $products->links() }}
+        </div>
         @else
         <div class="row justify-content-center">
             <div class="col-md-8">

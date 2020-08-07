@@ -9,16 +9,19 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Store;
 use App\Products;
+use App\User;
 
 class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $request->user()->id;
+        $user =  $request->user();
         /** @var StorRepository $storeRepository */
         $storeRepository = app(StoreRepository::class);
-        $store= $storeRepository->searchByOwnerId($request->user()->id);
-        return view('storepage',compact('store'));
+        $stores = $user->stores()->paginate(4);
+
+       
+        return view('storepage',compact('stores'));
     }
     public function show()
     {
@@ -26,6 +29,8 @@ class StoreController extends Controller
     }
     public function create(Request $request)
     {
+
+      
         /** @var StoreRepository $storeRepository */
         $storeRepository = app(StoreRepository::class);
 
@@ -35,7 +40,7 @@ class StoreController extends Controller
     }
     public function products(Request $request, Store $store)
     {
-        $products  = $store->with('products')->get()->pluck('products')->flatten(); 
+        $products  = $store->products()->with('brand','category')->paginate(7);
 
         return view('storeProductsList',compact('products','store'));
 

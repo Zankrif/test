@@ -26,8 +26,6 @@ class ProductService
         $brandService = app(BrandService::class);
         $categoryService = app(CategoryService::class);
 
-
-           
             $brandId = $brandService->create($brand)->id;
             $category = $categoryService->create($category)->id;
             $productModel = $productRepository->create($name ,$description,$price,$quantity);
@@ -35,6 +33,8 @@ class ProductService
             app( CategoryProductRepository::class)->create($category,$productModel->id);
             app(StoreProductsRepository::class)->create($store->id,$productModel->id);
         
+        
+         
        
         return $productModel;
 
@@ -95,12 +95,3 @@ class ProductService
 
     }
 }
-/*
-         $brandId = $brandService->create($brand)->id;
-        $category = $categoryService->create($category)->id;
-
-        $productModel = $productRepository->create($name ,$description,$price,$quantity);
-        app( BrandProductRepository::class)->create($brandId,$productModel->id);
-        app( CategoryProductRepository::class)->create($category,$productModel->id);
-        app(StoreProductsRepository::class)->create($store->id,$productModel->id);
-*/

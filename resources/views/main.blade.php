@@ -9,6 +9,7 @@
     <input id='brand' type="radio" class="custom-radio" name='type' value='1'>
     <label for="category">В категориях</label>
     <input id='category' type="radio" class="custom-radio" name='type' value='2'>
+    
     <button class="btn btn-outline-success" style="margin:auto">Поиск!</button>
 </form>
 @endsection
@@ -31,7 +32,7 @@
                         Цена : {{ $product->price }}
                     </h4>
                     <p style="margin: 10px;text-align: left">
-                        {{mb_strimwidth ($product->description,0,100,'....')  }}
+                        {{mb_strimwidth ($product->description,0,90,'....')  }}
                     </p>
                 <a class="btn-sm btn-primary" href='{{ route('main.brand',['brand'=>$product->brand[0]->id]) }}'>{{ $product->brand[0]->name }}</a>
                 <a class="btn-sm btn-primary" href='{{ route('main.category',['category'=>$product->category[0]->id]) }}'>{{ $product->category[0]->name }}</a>
@@ -40,7 +41,12 @@
 
         @endforeach
     </div>
- 
+    
+    <div class='mnav'>
+        {{ $products->links() }}
+
+    </div>
+
     @else
     <div class="row justify-content-center">
         <div class="col-md-8">
